@@ -1,4 +1,4 @@
-from app.utils import get_random_alphanumeric_string, SHORT_KEY_LENGTH
+from app.utils import get_random_alphanumeric_string
 
 
 class ShortKeys:
@@ -9,7 +9,7 @@ class ShortKeys:
 
     Attributes
     ----------
-    urls : dict
+    key_to_url : dict
         a dictionary that store values are given by users and generated keys
 
     Methods
@@ -22,25 +22,32 @@ class ShortKeys:
 
 
     """
-    def __init__(self):
+
+    def __init__(self, key_length):
         """ Create an empty dictionary."""
-        self.urls = {}
-    def add_key(self, value):
+        self.key_to_url = {}
+        self.key_length = key_length
+
+    def add_key(self, url):
         """ Adds new pair key-value to dictionary
 
-        :param value: string that was given by user
+        :param url: string that was given by user
         :return: generated key for given value
         """
         short_key = self.__find_unique_key()
-        self.urls[short_key] = value
+        self.key_to_url[short_key] = url
         return short_key
+
     def __find_unique_key(self):
         """ Looks for a key that are not in dictionary yet
 
         :return: found key
         """
-        key = get_random_alphanumeric_string(SHORT_KEY_LENGTH)
-        while key in self.urls: #do..while  использовать константу, передавать длину ключа как параметр
-            key = get_random_alphanumeric_string(SHORT_KEY_LENGTH)
+        key = get_random_alphanumeric_string(self.key_length)
+        while key in self.key_to_url:  # do..while  использовать константу, передавать длину ключа как параметр
+            key = get_random_alphanumeric_string(self.key_length)
         return key
 
+    def get_url(self, key):
+        """Returns a value by a given key"""
+        return self.key_to_url.get(key)
