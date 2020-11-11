@@ -1,8 +1,10 @@
+"""A file keeps class KeyToUrl. This class represents a dictionary
+        where values are given by users and keys are generated in this class."""
 from app.utils import get_random_alphanumeric_string
 
 
-class ShortKeys:
-    """ A class used to represent a dictionary
+class KeyToUrl:
+    """ A class represents a dictionary
         where values are given by users and keys are generated in this class
 
     ...
@@ -24,14 +26,14 @@ class ShortKeys:
     """
 
     def __init__(self, key_length):
-        """ Create an empty dictionary."""
+        """ Create an instance of the class"""
         self.key_to_url = {}
         self.key_length = key_length
 
     def add_key(self, url):
-        """ Adds new pair key-value to dictionary
+        """ Adds generated for URL key and url to the dictionary
 
-        :param url: string that was given by user
+        :param url: string that was given by user by typing to the textbox in the application
         :return: generated key for given value
         """
         short_key = self.__find_unique_key()
