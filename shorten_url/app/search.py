@@ -1,5 +1,7 @@
-"""A file keeps class KeyToUrl. This class represents a dictionary
-        where values are given by users and keys are generated in this class."""
+""" A file keeps class KeyToUrl. This class represents a dictionary
+    where values are given by users and keys are generated in this class.
+
+"""
 from app.utils import get_random_alphanumeric_string
 
 
