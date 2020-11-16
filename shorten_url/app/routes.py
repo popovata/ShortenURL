@@ -1,10 +1,9 @@
 """ The file is for view functions than handles requests
 
 """
-from app import app,run
+from app import app, search, run
 from flask import render_template, request, redirect
-
-WEBSITE_ADDRESS = "http://127.0.0.1:5000/"
+import urlparse
 
 @app.route("/", methods=["GET", "POST"])
 def home():
@@ -14,9 +13,10 @@ def home():
     """
     if request.method == "POST":
         url = str(request.form["url"])
-        key = run.url_shortener.add_key(url)
-        short_url = WEBSITE_ADDRESS + key
-        return render_template("index.html",  url=url, result=short_url)
+        url_shortener = search.KeyToUrl(run.SHORT_KEY_LENGTH)
+        key = url_shortener.add_key(url)
+        website_address = str(request.url_root)
+        return render_template("index.html",  url=url, result=urlparse.urljoin(website_address, key))
     return render_template("index.html")
 
 @app.route("/<key>")
@@ -27,5 +27,6 @@ def redirect_to_website(key):
     :param key: short url
     :return: the right website
     """
-    target_url = run.url_shortener.get_url(key)
+    url_shortener = search.KeyToUrl(run.SHORT_KEY_LENGTH)
+    target_url = url_shortener.get_url(key)
     return redirect(target_url)

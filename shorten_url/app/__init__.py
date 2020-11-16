@@ -1,3 +1,6 @@
+"""
+ The file  contains the application factory
+"""
 from flask import Flask
 from app import search
 

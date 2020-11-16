@@ -1,11 +1,32 @@
-""" A file keeps class KeyToUrl. This class represents a dictionary
+""" A file keeps singleton class KeyToUrl. This class represents a dictionary
     where values are given by users and keys are generated in this class.
 
 """
 from app.utils import get_random_alphanumeric_string
+import threading
+
+lock = threading.Lock()
+
+class ShortnerManagerSingleton(type):
+    """ Metaclass of class KeyToUrl
+
+    """
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        """
+        Function executes every time that object of class KeyToUrl is calling
+        
+        :return:instance of class
+        """
+        if cls not in cls._instances:
+            with lock:
+                if cls not in cls._instances:
+                    cls._instances[cls] = super(ShortnerManagerSingleton, cls).__call__(*args, **kwargs)
+            return cls._instances[cls]
 
 
-class KeyToUrl:
+class KeyToUrl(object):
     """ A class represents a dictionary
         where values are given by users and keys are generated in this class
 
@@ -19,7 +40,7 @@ class KeyToUrl:
     Methods
     -------
     add_key(value)
-        adds new pair key-value to dictionary
+        adds generated for URL key and url to the dictionary
 
     __find_unique_key()
         generates random strings until find a key that are not in dictionary
@@ -27,6 +48,7 @@ class KeyToUrl:
 
     """
 
+    __metaclass__ = ShortnerManagerSingleton
     def __init__(self, key_length):
         """ Create an instance of the class"""
         self.key_to_url = {}
@@ -47,11 +69,14 @@ class KeyToUrl:
 
         :return: found key
         """
-        key = get_random_alphanumeric_string(self.key_length)
-        while key in self.key_to_url:  # do..while  использовать константу, передавать длину ключа как параметр
+        key = None
+        while key in self.key_to_url:
             key = get_random_alphanumeric_string(self.key_length)
         return key
 
     def get_url(self, key):
-        """Returns a value by a given key"""
+        """ Returns a value by a given key
+        :param key: A string is a key to find right url
+        :return: right url
+        """
         return self.key_to_url.get(key)
