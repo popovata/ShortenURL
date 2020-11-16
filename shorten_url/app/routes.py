@@ -12,11 +12,13 @@ def home():
     :return: home page of application
     """
     if request.method == "POST":
-        url = str(request.form["url"])
+        base_url = str(request.form["url"])
         url_shortener = search.KeyToUrl(run.SHORT_KEY_LENGTH)
-        key = url_shortener.add_key(url)
+        key = url_shortener.add_key(base_url)
+        url = '/' + key
         website_address = str(request.url_root)
-        return render_template("index.html",  url=url, result=urlparse.urljoin(website_address, key))
+        res = urlparse.urljoin(website_address, url)
+        return render_template("index.html",  url=base_url, result=res)
     return render_template("index.html")
 
 @app.route("/<key>")

@@ -3,9 +3,7 @@
 
 """
 from app.utils import get_random_alphanumeric_string
-import threading
 
-lock = threading.Lock()
 
 class ShortnerManagerSingleton(type):
     """ Metaclass of class KeyToUrl
@@ -20,10 +18,8 @@ class ShortnerManagerSingleton(type):
         :return:instance of class
         """
         if cls not in cls._instances:
-            with lock:
-                if cls not in cls._instances:
-                    cls._instances[cls] = super(ShortnerManagerSingleton, cls).__call__(*args, **kwargs)
-            return cls._instances[cls]
+            cls._instances[cls] = super(ShortnerManagerSingleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
 
 
 class KeyToUrl(object):
@@ -49,6 +45,7 @@ class KeyToUrl(object):
     """
 
     __metaclass__ = ShortnerManagerSingleton
+
     def __init__(self, key_length):
         """ Create an instance of the class"""
         self.key_to_url = {}
