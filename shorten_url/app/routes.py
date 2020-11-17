@@ -1,34 +1,43 @@
-""" The file is for view functions than handles requests
+"""
+The file is for view functions than handles requests
 
 """
-from app import app, search, run
+from app import app, search
 from flask import render_template, request, redirect
 import urlparse
 
+
 @app.route("/", methods=["GET", "POST"])
 def home():
-    """ Home page of application
+    """
+    Home page of application
 
     :return: home page of application
+
     """
-    if request.method == "POST":
-        base_url = str(request.form["url"])
-        url_shortener = search.KeyToUrl(run.SHORT_KEY_LENGTH)
-        key = url_shortener.add_key(base_url)
-        url = '/' + key
-        website_address = str(request.url_root)
-        res = urlparse.urljoin(website_address, url)
-        return render_template("index.html",  url=base_url, result=res)
-    return render_template("index.html")
+    if request.method != "POST":
+        return render_template("index.html")
+    base_url = str(request.form["url"])
+    url_shortener = search.KeyToUrl()
+    key = url_shortener.add_key(base_url)
+    website_address = str(request.url_root)
+    short_url = urlparse.urljoin(website_address, '/' + key)
+    return render_template("index.html", url=base_url, short_url=short_url)
+
 
 @app.route("/<key>")
 def redirect_to_website(key):
-    """ Redirect user to the right website by short url
-
+    """
+    Redirect user to the right website by short url
 
     :param key: short url
     :return: the right website
+
     """
-    url_shortener = search.KeyToUrl(run.SHORT_KEY_LENGTH)
-    target_url = url_shortener.get_url(key)
+    url_shortener = search.KeyToUrl()
+    target_url = str(request.url_root)
+    try:
+        target_url = url_shortener.get_url(key)
+    except RuntimeError:
+        print("That was no valid url.")
     return redirect(target_url)
