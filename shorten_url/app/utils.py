@@ -1,6 +1,5 @@
 """
 A file is for helpful functions
-
 """
 import random
 import string
@@ -14,6 +13,5 @@ def get_random_alphanumeric_string(length):
 
     :param length: length of a result string
     :return: a random string
-
     """
     return ''.join(random.choice(LETTERS_AND_DIGITS) for i in range(length))

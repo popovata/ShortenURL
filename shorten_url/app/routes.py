@@ -1,6 +1,5 @@
 """
-The file is for view functions than handles requests
-
+The file is for view functions that handle requests
 """
 from app import app, search
 from flask import render_template, request, redirect
@@ -10,10 +9,9 @@ import urlparse
 @app.route("/", methods=["GET", "POST"])
 def home():
     """
-    Home page of application
+    Home page of the application
 
-    :return: home page of application
-
+    :return: home page of the application
     """
     if request.method != "POST":
         return render_template("index.html")
@@ -28,11 +26,10 @@ def home():
 @app.route("/<key>")
 def redirect_to_website(key):
     """
-    Redirect user to the right website by short url
+    Redirect a user to the right website by short URL
 
     :param key: short url
     :return: the right website
-
     """
     url_shortener = search.KeyToUrl()
     target_url = str(request.url_root)
