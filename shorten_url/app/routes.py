@@ -36,5 +36,5 @@ def redirect_to_website(key):
     try:
         target_url = url_shortener.get_url(key)
     except RuntimeError:
-        print("That was no valid url.")
+        print("unknown key: ", key)
     return redirect(target_url)

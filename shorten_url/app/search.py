@@ -3,19 +3,22 @@ A file keeps singleton class KeyToUrl. This class represents a dictionary
 where values are given by users and keys are generated in this class.
 """
 from app.utils import get_random_alphanumeric_string
+import threading
 
 SHORT_KEY_LENGTH = 5
+lock = threading.Lock()
 
 class SingletonMetaclass(type):
     """
-    Metaclass to define singleton
-
+    Singleton metaclass
     """
     _instances = {}
 
     def __call__(cls, *args, **kwargs):
         if cls not in cls._instances:
-            cls._instances[cls] = super(SingletonMetaclass, cls).__call__(*args, **kwargs)
+            with lock:
+                if cls not in cls._instances:
+                    cls._instances[cls] = super(SingletonMetaclass, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
 
 
