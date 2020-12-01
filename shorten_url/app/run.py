@@ -1,5 +1,5 @@
 """
-The main file where the application starts running
+The main file starts to run the application.
 """
 
 from app import app

@@ -1,5 +1,5 @@
 """
-A file is for helpful functions
+A file contains utility functions
 """
 import random
 import string

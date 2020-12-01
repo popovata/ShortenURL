@@ -3,20 +3,22 @@ A file keeps singleton class KeyToUrl. This class represents a dictionary
 where values are given by users and keys are generated in this class.
 """
 from app.utils import get_random_alphanumeric_string
-import threading
+from threading import Lock
+from rwlock import RWLock
 
 SHORT_KEY_LENGTH = 5
-lock = threading.Lock()
+
 
 class SingletonMetaclass(type):
     """
     Singleton metaclass
     """
     _instances = {}
+    _lock = Lock()
 
     def __call__(cls, *args, **kwargs):
         if cls not in cls._instances:
-            with lock:
+            with cls._lock:
                 if cls not in cls._instances:
                     cls._instances[cls] = super(SingletonMetaclass, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
@@ -24,7 +26,7 @@ class SingletonMetaclass(type):
 
 class KeyToUrl(object):
     """
-    A class represents a dictionary
+    A thread safe class represents a dictionary
     where values are given by users and keys are generated in this class
 
     ...
@@ -53,6 +55,7 @@ class KeyToUrl(object):
         """
         self.key_to_url = {}
         self.key_length = key_length
+        self.read_write_lock = RWLock()
 
     def add_key(self, url):
         """
@@ -61,13 +64,15 @@ class KeyToUrl(object):
         :param url: string that was given by user by typing to the textbox in the application
         :return: generated key for given value
         """
-        key = self.__find_unique_key()
-        self.key_to_url[key] = url
+        with self.read_write_lock.r_locked():
+            key = self.__find_unique_key()
+        with self.read_write_lock.w_locked():
+            self.key_to_url[key] = url
         return key
 
     def __find_unique_key(self):
         """
-        Looks for a key that are not in the dictionary yet
+        Looks for a key that does not exist in the dictionary yet
 
         :return: found key
         """
@@ -80,7 +85,8 @@ class KeyToUrl(object):
         """
         Returns a value by a given key
 
-        :param key: A string is a key to find right url
+        :param key: A string represents a key to find right url
         :return: right url
         """
-        return self.key_to_url.get(key)
+        with self.read_write_lock.r_locked():
+            return self.key_to_url.get(key)

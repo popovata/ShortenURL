@@ -1,5 +1,5 @@
 """
-The file is for view functions that handle requests
+The file contains view functions that handle requests
 """
 from app import app, search
 from flask import render_template, request, redirect
