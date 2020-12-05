@@ -5,8 +5,13 @@ where values are given by users and keys are generated in this class.
 from app.utils import get_random_alphanumeric_string
 from threading import Lock
 from rwlock import RWLock
+from redis import Redis
+from app import app
 
 SHORT_KEY_LENGTH = 5
+REDIS_HOST = "localhost"
+REDIS_PORT = 6379
+REDIS_DB = 0
 
 
 class SingletonMetaclass(type):
@@ -53,7 +58,7 @@ class KeyToUrl(object):
 
         :param key_length: length of dictionary key
         """
-        self.key_to_url = {}
+        self.key_to_url = Redis(host=app.config['REDIS_HOST'], port=app.config['REDIS_PORT'], db=app.config['REDIS_DB'])
         self.key_length = key_length
         self.read_write_lock = RWLock()
 
@@ -67,7 +72,7 @@ class KeyToUrl(object):
         with self.read_write_lock.r_locked():
             key = self.__find_unique_key()
         with self.read_write_lock.w_locked():
-            self.key_to_url[key] = url
+            self.key_to_url.set(key, url)
         return key
 
     def __find_unique_key(self):
@@ -77,7 +82,7 @@ class KeyToUrl(object):
         :return: found key
         """
         key = None
-        while key is None or key in self.key_to_url:
+        while key is None or self.key_to_url.exists(key):
             key = get_random_alphanumeric_string(self.key_length)
         return key
 
