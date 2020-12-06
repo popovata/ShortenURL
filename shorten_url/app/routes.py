@@ -32,9 +32,7 @@ def redirect_to_website(key):
     :return: the right website
     """
     url_shortener = search.KeyToUrl()
-    target_url = str(request.url_root)
-    try:
-        target_url = url_shortener.get_url(key)
-    except RuntimeError:
-        print("unknown key: ", key)
+    target_url = url_shortener.get_url(key)
+    if (target_url is None):
+        raise RuntimeError('Unknown key')
     return redirect(target_url)
