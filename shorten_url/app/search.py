@@ -69,9 +69,7 @@ class KeyToUrl(object):
         :return: generated key for given value
         """
         with self.read_write_lock.w_locked():
-            with self.read_write_lock.r_locked():
                 key = self.__find_unique_key()
-            with self.read_write_lock.w_locked():
                 self.key_to_url.set(key, url)
         return key
 
