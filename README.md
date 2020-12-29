@@ -6,7 +6,7 @@ Web application for a simple URL shortening service using Flask & redis
 * [Technologies](#technologies)
 
 ## Usage example
-![Usage example](./examples/ShortenerURL.mp4)
+![Usage example](./examples/shorten_url.gif)
 
 ## Technologies
 * Python -version 3.7.3
