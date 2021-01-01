@@ -2,10 +2,12 @@
 <html>
   <head>
     <title>Shortener URL</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=3.0">
     <style>
       .container {
-        max-width: 1000px;
+        max-width: 4000px;
+        text-align: center;
+        font-size: 40px;
       }
     </style>
   </head>
@@ -14,9 +16,9 @@
       <h1>Shortener URL</h1>
       <form role="form" method='POST' action='/'>
         <div class="form-group">
-          <input type="text" name="url" class="form-control" id="url-box" placeholder="Enter URL..." style="max-width: 300px;" autofocus required>
+          <input type="text" name="url" class="form-control" id="url-box" placeholder="Enter URL..." style="max-width: 800px;height:30px" size="80" autofocus required>
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-default" style="width:200px;font-size:30px">Submit</button>
       </form>
 
     <h2>Shortened URL</h2>
