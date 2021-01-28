@@ -9,6 +9,6 @@ Web application for a simple URL shortening service using Flask & redis
 ![Usage example](./examples/shorten_url.gif)
 
 ## Technologies
-* Python -version 3.7.3
+* Python - version 3.7.3
 * Flask - version 1.1.1
 
