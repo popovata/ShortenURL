@@ -1,8 +1,9 @@
 # Shorten URL
-Web application for a simple URL shortening service using Flask & redis 
+A Flask web application to make work with long links easier by reducing of length using short redirection URLs. 
+Used Redis as a cache.
 
 ## Table of contents
-* [Usage example](#usage example)
+* [Usage example](#usage_example)
 * [Technologies](#technologies)
 
 ## Usage example
